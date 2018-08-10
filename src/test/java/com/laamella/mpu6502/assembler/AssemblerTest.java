@@ -4,18 +4,14 @@ import com.laamella.mpu6502.Mpu6502;
 import com.laamella.mpu6502.OnlyMemoryBus;
 import com.laamella.mpu6502.RunState;
 import com.laamella.mpu6502.Segment;
-import com.laamella.mpu6502.monitor.Monitor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static com.laamella.mpu6502.Mpu6502Specifications.OPCODE.LDA_IMM;
-import static com.laamella.mpu6502.Mpu6502Specifications.OPCODE.RTS;
 import static com.laamella.mpu6502.Mpu6502Specifications.OPCODE.STA_ABS;
-import static com.laamella.mpu6502.assembler.Line.bytes;
-import static com.laamella.mpu6502.assembler.Line.line;
-import static com.laamella.mpu6502.assembler.Line.org;
-import static org.junit.Assert.assertEquals;
+import static com.laamella.mpu6502.assembler.Line.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AssemblerTest {
     private final Assembler assembler = new Assembler();

@@ -1,14 +1,16 @@
 package com.laamella.mpu6502;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
 import static com.laamella.mpu6502.RunState.RUNNING;
-import static junit.framework.TestCase.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
+@Disabled
 public class Mpu6502Test {
 
     /**
