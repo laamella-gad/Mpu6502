@@ -1,33 +1,33 @@
 package com.laamella.mpu6502.assembler;
 
+import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static java.util.Arrays.*;
 import static java.util.stream.Collectors.*;
 
-public class Bytes extends Assemblable {
-    private final int[] bytes;
+public class Chars extends Assemblable {
+    private final char[] chars;
 
-    Bytes(int... bytes) {
-        this.bytes = bytes;
+    Chars(char... chars) {
+        this.chars = chars;
     }
 
     @Override
     public int byteSize() {
-        return bytes.length;
+        return chars.length;
     }
 
     @Override
     public void assembleTo(Consumer<Integer> data) {
-        for (int b : bytes) {
+        for (int b : chars) {
             data.accept(b);
         }
     }
 
     @Override
     public String toString() {
-        return getAddress().map(Object::toString).orElse("?") + "\t.byte " + stream(bytes).mapToObj(b -> "" + b).collect(joining(", "));
+        return getAddress().map(Object::toString).orElse("?") + "\t.char " + CharBuffer.wrap(chars).chars().mapToObj(b -> "'" + (char)b + "'").collect(joining(", "));
     }
 }

@@ -6,8 +6,10 @@ import java.util.function.Supplier;
 
 import static com.laamella.mpu6502.Mpu6502Specifications.ADDRESSING_MODE;
 import static com.laamella.mpu6502.Mpu6502Specifications.OPCODE_NAME;
+import static com.laamella.mpu6502.assembler.Words.hi;
+import static com.laamella.mpu6502.assembler.Words.lo;
 
-public final class Instruction extends Line {
+public final class Instruction extends Assemblable {
     private final int opcode;
     private final Supplier<Optional<Integer>> operand;
 
@@ -26,9 +28,9 @@ public final class Instruction extends Line {
         data.accept(opcode);
         if (byteSize() > 1) {
             int oper = operand.get().get();
-            data.accept(oper & 0xFF);
+            data.accept(lo(oper));
             if (byteSize() > 2) {
-                data.accept((oper >> 8) & 0xFF);
+                data.accept(hi(oper));
             }
         }
     }

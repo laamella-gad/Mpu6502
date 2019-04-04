@@ -2,7 +2,7 @@ package com.laamella.mpu6502.assembler;
 
 import java.util.function.Consumer;
 
-public final class Label extends Line {
+public final class Label extends Assemblable {
     Label() {
     }
 
@@ -17,6 +17,6 @@ public final class Label extends Line {
 
     @Override
     public String toString() {
-        return ":";
+        return getAddress().map(Object::toString).orElse("?") + ":";
     }
 }

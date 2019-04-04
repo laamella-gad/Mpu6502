@@ -10,7 +10,7 @@ import java.util.List;
 
 import static com.laamella.mpu6502.Mpu6502Specifications.OPCODE.LDA_IMM;
 import static com.laamella.mpu6502.Mpu6502Specifications.OPCODE.STA_ABS;
-import static com.laamella.mpu6502.assembler.Line.*;
+import static com.laamella.mpu6502.assembler.Assemblable.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AssemblerTest {
@@ -18,12 +18,12 @@ public class AssemblerTest {
 
     @Test
     public void test() {
-        Line testByte = bytes(0);
+        Assemblable testByte = bytes(0);
         assembler.add(
                 org(0x1000),
-                line(LDA_IMM, 15),
-                line(STA_ABS, testByte),
-                line(2),
+                instruction(LDA_IMM, 15),
+                instruction(STA_ABS, testByte),
+                instruction(2),
                 testByte
         );
         List<Segment> segments = assembler.assemble();

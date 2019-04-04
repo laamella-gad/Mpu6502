@@ -15,6 +15,14 @@ public class Segment {
         this(loadAddress, data.stream().mapToInt(i -> i).toArray());
     }
 
+    public byte[] getDataAsByteArray() {
+        byte[] bytes = new byte[data.length];
+        for (int i = 0; i < data.length; i++) {
+            bytes[i] = (byte) data[i];
+        }
+        return bytes;
+    }
+
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();

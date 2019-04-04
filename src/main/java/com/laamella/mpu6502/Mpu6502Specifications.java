@@ -263,7 +263,7 @@ public final class Mpu6502Specifications {
         public static final int CARRY = 0x01;
     }
 
-    public static final int CPU_CYCLES[] = {
+    public static final int[] CPU_CYCLES = {
             7, 6, 0, 8, 3, 3, 5, 5, 3, 2, 2, 2, 4, 4, 6, 6,
             2, 5, 0, 8, 4, 4, 6, 6, 2, 4, 2, 7, 4, 4, 7, 7,
             6, 6, 0, 8, 3, 3, 5, 5, 4, 2, 2, 2, 4, 4, 6, 6,
@@ -282,7 +282,7 @@ public final class Mpu6502Specifications {
             2, 5, 0, 8, 4, 4, 6, 6, 2, 4, 2, 7, 4, 4, 7, 7
     };
 
-    public static final String OPCODE_NAME[] = {
+    public static final String[] OPCODE_NAME = {
             "BRK", "ORA", "JAM", "SLO", "NOP", "ORA", "ASL", "SLO", "PHP", "ORA", "ASL", "ANC", "NOP", "ORA", "ASL", "SLO",
             "BPL", "ORA", "JAM", "SLO", "NOP", "ORA", "ASL", "SLO", "CLC", "ORA", "NOP", "SLO", "NOP", "ORA", "ASL", "SLO",
             "JSR", "AND", "JAM", "RLA", "BIT", "AND", "ROL", "RLA", "PLP", "AND", "ROL", "ANC", "BIT", "AND", "ROL", "RLA",
@@ -304,7 +304,7 @@ public final class Mpu6502Specifications {
     private static final boolean Y = true;
     private static final boolean N = false;
 
-    public static final boolean ILLEGAL[] = {
+    public static final boolean[] ILLEGAL = {
             N, N, Y, Y, Y, N, N, Y, N, N, N, Y, Y, N, N, Y,
             N, N, Y, Y, Y, N, N, Y, N, N, Y, Y, Y, N, N, Y,
             N, N, Y, Y, N, N, N, Y, N, N, N, Y, N, N, N, Y,
@@ -333,7 +333,7 @@ public final class Mpu6502Specifications {
         }
     }
 
-    public static final AddressingMode ADDRESSING_MODE[] = {
+    public static final AddressingMode[] ADDRESSING_MODE = {
             NONE, IZX, JAM, IZX, ZP, ZP, ZP, ZP, NONE, IMM, NONE, IMM, ABS, ABS, ABS, ABS,
             REL, IZY, JAM, IZY, ZPX, ZPX, ZPX, ZPX, NONE, ABY, NONE, ABY, ABX, ABX, ABX, ABX,
             ABS, IZX, JAM, IZX, ZP, ZP, ZP, ZP, NONE, IMM, NONE, IMM, ABS, ABS, ABS, ABS,

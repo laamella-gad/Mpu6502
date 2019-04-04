@@ -9,28 +9,28 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.asList;
 
 public class Assembler {
-    private final List<Line> lines = new ArrayList<>();
+    private final List<Assemblable> assemblables = new ArrayList<>();
 
     private void resolveAddresses() {
         Integer pc = null;
-        for (Line line : lines) {
-            if (line instanceof Org) {
-                pc = line.address;
+        for (Assemblable assemblable : assemblables) {
+            if (assemblable instanceof Org) {
+                pc = assemblable.address;
             } else if (pc == null) {
                 throw new IllegalStateException("Cannot assemble without an org(...).");
             } else {
-                line.address = pc;
-                pc += line.byteSize();
+                assemblable.address = pc;
+                pc += assemblable.byteSize();
             }
         }
     }
 
-    public void add(Line... lines) {
-        this.lines.addAll(asList(lines));
+    public void add(Assemblable... assemblables) {
+        this.assemblables.addAll(asList(assemblables));
     }
 
-    public void add(Line line) {
-        lines.add(line);
+    public void add(Assemblable assemblable) {
+        assemblables.add(assemblable);
     }
 
     public List<Segment> assemble() {
@@ -42,15 +42,15 @@ public class Assembler {
         List<Segment> segments = new ArrayList<>();
         int loadAddress = 0;
         List<Integer> data = null;
-        for (Line line : lines) {
-            if (line instanceof Org) {
+        for (Assemblable assemblable : assemblables) {
+            if (assemblable instanceof Org) {
                 if (data != null) {
                     segments.add(new Segment(loadAddress, data));
                 }
-                loadAddress = line.address;
+                loadAddress = assemblable.address;
                 data = new ArrayList<>();
             }
-            line.assembleTo(data::add);
+            assemblable.assembleTo(data::add);
         }
         if (data != null) {
             segments.add(new Segment(loadAddress, data));
@@ -61,6 +61,6 @@ public class Assembler {
 
     @Override
     public String toString() {
-        return lines.stream().map(Object::toString).collect(Collectors.joining("\n"));
+        return assemblables.stream().map(Object::toString).collect(Collectors.joining("\n"));
     }
 }

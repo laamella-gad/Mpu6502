@@ -2,7 +2,7 @@ package com.laamella.mpu6502.assembler;
 
 import java.util.function.Consumer;
 
-public final class Org extends Line {
+public final class Org extends Assemblable {
     Org(int address) {
         this.address = address;
     }
