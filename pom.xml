@@ -13,7 +13,7 @@
 	</properties>
 
 	<name>${project.groupId}:${project.artifactId}</name>
-	<description>A very simple in memory database</description>
+	<description>All kinds of data about the 6502 CPU, including an emulator</description>
 	<url>https://github.com/laamella-gad/Mpu6502</url>
 
 	<developers>
