@@ -11,258 +11,251 @@ import static com.laamella.mpu6502.Mpu6502Specifications.AddressingMode.*;
  * A big collection of data on the processor's instructions.
  */
 public final class Mpu6502Specifications {
-    public enum OPCODE {
-        BRK(0x00),
-        ORA_IZX(0x01),
-        SLO_IZX_03(0x03),
-        NOP_ZP_04(0x04),
-        ORA_ZP(0x05),
-        ASL_ZP(0x06),
-        SLO_ZP_07(0x07),
-        PHP(0x08),
-        ORA_IMM(0x09),
-        ASL(0x0A),
-        ANC_IMM_0B(0x0B),
-        NOP_ABS_0C(0x0C),
-        ORA_ABS(0x0D),
-        ASL_ABS(0x0E),
-        SLO_ABS_0F(0x0F),
-        BPL(0x10),
-        ORA_IZY(0x11),
-        SLO_IZY_13(0x13),
-        NOP_ZPX_14(0x14),
-        ORA_ZPX(0x15),
-        ASL_ZPX(0x16),
-        SLO_ZPX_17(0x17),
-        CLC(0x18),
-        ORA_ABY(0x19),
-        NOP_1A(0x1A),
-        SLO_ABY_1B(0x1B),
-        NOP_ABX_1C(0x1C),
-        ORA_ABX(0x1D),
-        ASL_ABX(0x1E),
-        SLO_ABX_1F(0x1F),
-        JSR_ABS(0x20),
-        AND_IZX(0x21),
-        RLA_IZX_23(0x23),
-        BIT_ZP(0x24),
-        AND_ZP(0x25),
-        ROL_ZP(0x26),
-        RLA_ZP_27(0x27),
-        PLP(0x28),
-        AND_IMM(0x29),
-        ROL(0x2A),
-        ANC_IMM_2B(0x2B),
-        BIT_ABS(0x2C),
-        AND_ABS(0x2D),
-        ROL_ABS(0x2E),
-        RLA_ABS_2F(0x2F),
-        BMI(0x30),
-        AND_IZY(0x31),
-        RLA_IZY_33(0x33),
-        NOP_ZPX_34(0x34),
-        AND_ZPX(0x35),
-        ROL_ZPX(0x36),
-        RLA_ZPX_37(0x37),
-        SEC(0x38),
-        AND_ABY(0x39),
-        NOP_3A(0x3A),
-        RLA_ABY_3B(0x3B),
-        NOP_ABX_3C(0x3C),
-        AND_ABX(0x3D),
-        ROL_ABX(0x3E),
-        RLA_ABX_3F(0x3F),
-        RTI(0x40),
-        EOR_IZX(0x41),
-        SRE_IZX_43(0x43),
-        NOP_ZP_44(0x44),
-        EOR_ZP(0x45),
-        LSR_ZP(0x46),
-        SRE_ZP_47(0x47),
-        PHA(0x48),
-        EOR_IMM(0x49),
-        LSR(0x4A),
-        ALR_IMM_4B(0x4B),
-        JMP_ABS(0x4C),
-        EOR_ABS(0x4D),
-        LSR_ABS(0x4E),
-        SRE_ABS_4F(0x4F),
-        BVC(0x50),
-        EOR_IZY(0x51),
-        SRE_IZY_53(0x53),
-        NOP_ZPX_54(0x54),
-        EOR_ZPX(0x55),
-        LSR_ZPX(0x56),
-        SRE_ZPX_57(0x57),
-        CLI(0x58),
-        EOR_ABY(0x59),
-        NOP_5A(0x5A),
-        SRE_ABY_5B(0x5B),
-        NOP_ABX_5C(0x5C),
-        EOR_ABX(0x5D),
-        LSR_ABX(0x5E),
-        SRE_ABX_5F(0x5F),
-        RTS(0x60),
-        ADC_IZX(0x61),
-        RRA_IZX_63(0x63),
-        NOP_ZP_64(0x64),
-        ADC_ZP(0x65),
-        ROR_ZP(0x66),
-        RRA_ZP_67(0x67),
-        PLA(0x68),
-        ADC_IMM(0x69),
-        ROR(0x6A),
-        ARR_IMM_6B(0x6B),
-        JMP_IND(0x6C),
-        ADC_ABS(0x6D),
-        ROR_ABS(0x6E),
-        RRA_ABS_6F(0x6F),
-        BVS(0x70),
-        ADC_IZY(0x71),
-        RRA_IZY_73(0x73),
-        NOP_ZPX_74(0x74),
-        ADC_ZPX(0x75),
-        ROR_ZPX(0x76),
-        RRA_ZPX_77(0x77),
-        SEI(0x78),
-        ADC_ABY(0x79),
-        NOP_7A(0x7A),
-        RRA_ABY_7B(0x7B),
-        NOP_ABX_7C(0x7C),
-        ADC_ABX(0x7D),
-        ROR_ABX(0x7E),
-        RRA_ABX_7F(0x7F),
-        NOP_IMM_80(0x80),
-        STA_IZX(0x81),
-        NOP_IMM_82(0x82),
-        SAX_IZX_83(0x83),
-        STY_ZP(0x84),
-        STA_ZP(0x85),
-        STX_ZP(0x86),
-        SAX_ZP_87(0x87),
-        DEY(0x88),
-        NOP_IMM_89(0x89),
-        TXA(0x8A),
-        XAA_IMM_8B(0x8B),
-        STY_ABS(0x8C),
-        STA_ABS(0x8D),
-        STX_ABS(0x8E),
-        SAX_ABS_8F(0x8F),
-        BCC(0x90),
-        STA_IZY(0x91),
-        AHX_IZY_93(0x93),
-        STY_ZPX(0x94),
-        STA_ZPX(0x95),
-        STX_ZPY(0x96),
-        SAX_ZPY_97(0x97),
-        TYA(0x98),
-        STA_ABY(0x99),
-        TXS(0x9A),
-        TAS_ABY_9B(0x9B),
-        SHY_ABX_9C(0x9C),
-        STA_ABX(0x9D),
-        SHX_ABY_9E(0x9E),
-        AHX_ABY_9F(0x9F),
-        LDY_IMM(0xA0),
-        LDA_IZX(0xA1),
-        LDX_IMM(0xA2),
-        LAX_IZX_A3(0xA3),
-        LDY_ZP(0xA4),
-        LDA_ZP(0xA5),
-        LDX_ZP(0xA6),
-        LAX_ZP_A7(0xA7),
-        TAY(0xA8),
-        LDA_IMM(0xA9),
-        TAX(0xAA),
-        LAX_IMM_AB(0xAB),
-        LDY_ABS(0xAC),
-        LDA_ABS(0xAD),
-        LDX_ABS(0xAE),
-        LAX_ABS_AF(0xAF),
-        BCS(0xB0),
-        LDA_IZY(0xB1),
-        LAX_IZY_B3(0xB3),
-        LDY_ZPX(0xB4),
-        LDA_ZPX(0xB5),
-        LDX_ZPY(0xB6),
-        LAX_ZPY_B7(0xB7),
-        CLV(0xB8),
-        LDA_ABY(0xB9),
-        TSX(0xBA),
-        LAS_ABY_BB(0xBB),
-        LDY_ABX(0xBC),
-        LDA_ABX(0xBD),
-        LDX_ABY(0xBE),
-        LAX_ABY_BF(0xBF),
-        CPY_IMM(0xC0),
-        CMP_IZX(0xC1),
-        NOP_IMM_C2(0xC2),
-        DCP_IZX_C3(0xC3),
-        CPY_ZP(0xC4),
-        CMP_ZP(0xC5),
-        DEC_ZP(0xC6),
-        DCP_ZP_C7(0xC7),
-        INY(0xC8),
-        CMP_IMM(0xC9),
-        DEX(0xCA),
-        AXS_IMM_CB(0xCB),
-        CPY_ABS(0xCC),
-        CMP_ABS(0xCD),
-        DEC_ABS(0xCE),
-        DCP_ABS_CF(0xCF),
-        BNE(0xD0),
-        CMP_IZY(0xD1),
-        DCP_IZY_D3(0xD3),
-        NOP_ZPX_D4(0xD4),
-        CMP_ZPX(0xD5),
-        DEC_ZPX(0xD6),
-        DCP_ZPX_D7(0xD7),
-        CLD(0xD8),
-        CMP_ABY(0xD9),
-        NOP_DA(0xDA),
-        DCP_ABY_DB(0xDB),
-        NOP_ABX_DC(0xDC),
-        CMP_ABX(0xDD),
-        DEC_ABX(0xDE),
-        DCP_ABX_DF(0xDF),
-        CPX_IMM(0xE0),
-        SBC_IZX(0xE1),
-        NOP_IMM_E2(0xE2),
-        ISC_IZX_E3(0xE3),
-        CPX_ZP(0xE4),
-        SBC_ZP(0xE5),
-        INC_ZP(0xE6),
-        ISC_ZP_E7(0xE7),
-        INX(0xE8),
-        SBC_IMM(0xE9),
-        NOP(0xEA),
-        SBC_IMM_EB(0xEB),
-        CPX_ABS(0xEC),
-        SBC_ABS(0xED),
-        INC_ABS(0xEE),
-        ISC_ABS_EF(0xEF),
-        BEQ(0xF0),
-        SBC_IZY(0xF1),
-        ISC_IZY_F3(0xF3),
-        NOP_ZPX_F4(0xF4),
-        SBC_ZPX(0xF5),
-        INC_ZPX(0xF6),
-        ISC_ZPX_F7(0xF7),
-        SED(0xF8),
-        SBC_ABY(0xF9),
-        NOP_FA(0xFA),
-        ISC_ABY_FB(0xFB),
-        NOP_ABX_FC(0xFC),
-        SBC_ABX(0xFD),
-        INC_ABX(0xFE),
-        ISC_ABX_FF(0xFF),
-        ;
-
-        public final int nr;
-
-        OPCODE(int nr) {
-            this.nr = nr;
-        }
+    public static final class OPCODE {
+        public static final int BRK = 0x00;
+        public static final int ORA_IZX = 0x01;
+        public static final int SLO_IZX_03 = 0x03;
+        public static final int NOP_ZP_04 = 0x04;
+        public static final int ORA_ZP = 0x05;
+        public static final int ASL_ZP = 0x06;
+        public static final int SLO_ZP_07 = 0x07;
+        public static final int PHP = 0x08;
+        public static final int ORA_IMM = 0x09;
+        public static final int ASL = 0x0A;
+        public static final int ANC_IMM_0B = 0x0B;
+        public static final int NOP_ABS_0C = 0x0C;
+        public static final int ORA_ABS = 0x0D;
+        public static final int ASL_ABS = 0x0E;
+        public static final int SLO_ABS_0F = 0x0F;
+        public static final int BPL = 0x10;
+        public static final int ORA_IZY = 0x11;
+        public static final int SLO_IZY_13 = 0x13;
+        public static final int NOP_ZPX_14 = 0x14;
+        public static final int ORA_ZPX = 0x15;
+        public static final int ASL_ZPX = 0x16;
+        public static final int SLO_ZPX_17 = 0x17;
+        public static final int CLC = 0x18;
+        public static final int ORA_ABY = 0x19;
+        public static final int NOP_1A = 0x1A;
+        public static final int SLO_ABY_1B = 0x1B;
+        public static final int NOP_ABX_1C = 0x1C;
+        public static final int ORA_ABX = 0x1D;
+        public static final int ASL_ABX = 0x1E;
+        public static final int SLO_ABX_1F = 0x1F;
+        public static final int JSR_ABS = 0x20;
+        public static final int AND_IZX = 0x21;
+        public static final int RLA_IZX_23 = 0x23;
+        public static final int BIT_ZP = 0x24;
+        public static final int AND_ZP = 0x25;
+        public static final int ROL_ZP = 0x26;
+        public static final int RLA_ZP_27 = 0x27;
+        public static final int PLP = 0x28;
+        public static final int AND_IMM = 0x29;
+        public static final int ROL = 0x2A;
+        public static final int ANC_IMM_2B = 0x2B;
+        public static final int BIT_ABS = 0x2C;
+        public static final int AND_ABS = 0x2D;
+        public static final int ROL_ABS = 0x2E;
+        public static final int RLA_ABS_2F = 0x2F;
+        public static final int BMI = 0x30;
+        public static final int AND_IZY = 0x31;
+        public static final int RLA_IZY_33 = 0x33;
+        public static final int NOP_ZPX_34 = 0x34;
+        public static final int AND_ZPX = 0x35;
+        public static final int ROL_ZPX = 0x36;
+        public static final int RLA_ZPX_37 = 0x37;
+        public static final int SEC = 0x38;
+        public static final int AND_ABY = 0x39;
+        public static final int NOP_3A = 0x3A;
+        public static final int RLA_ABY_3B = 0x3B;
+        public static final int NOP_ABX_3C = 0x3C;
+        public static final int AND_ABX = 0x3D;
+        public static final int ROL_ABX = 0x3E;
+        public static final int RLA_ABX_3F = 0x3F;
+        public static final int RTI = 0x40;
+        public static final int EOR_IZX = 0x41;
+        public static final int SRE_IZX_43 = 0x43;
+        public static final int NOP_ZP_44 = 0x44;
+        public static final int EOR_ZP = 0x45;
+        public static final int LSR_ZP = 0x46;
+        public static final int SRE_ZP_47 = 0x47;
+        public static final int PHA = 0x48;
+        public static final int EOR_IMM = 0x49;
+        public static final int LSR = 0x4A;
+        public static final int ALR_IMM_4B = 0x4B;
+        public static final int JMP_ABS = 0x4C;
+        public static final int EOR_ABS = 0x4D;
+        public static final int LSR_ABS = 0x4E;
+        public static final int SRE_ABS_4F = 0x4F;
+        public static final int BVC = 0x50;
+        public static final int EOR_IZY = 0x51;
+        public static final int SRE_IZY_53 = 0x53;
+        public static final int NOP_ZPX_54 = 0x54;
+        public static final int EOR_ZPX = 0x55;
+        public static final int LSR_ZPX = 0x56;
+        public static final int SRE_ZPX_57 = 0x57;
+        public static final int CLI = 0x58;
+        public static final int EOR_ABY = 0x59;
+        public static final int NOP_5A = 0x5A;
+        public static final int SRE_ABY_5B = 0x5B;
+        public static final int NOP_ABX_5C = 0x5C;
+        public static final int EOR_ABX = 0x5D;
+        public static final int LSR_ABX = 0x5E;
+        public static final int SRE_ABX_5F = 0x5F;
+        public static final int RTS = 0x60;
+        public static final int ADC_IZX = 0x61;
+        public static final int RRA_IZX_63 = 0x63;
+        public static final int NOP_ZP_64 = 0x64;
+        public static final int ADC_ZP = 0x65;
+        public static final int ROR_ZP = 0x66;
+        public static final int RRA_ZP_67 = 0x67;
+        public static final int PLA = 0x68;
+        public static final int ADC_IMM = 0x69;
+        public static final int ROR = 0x6A;
+        public static final int ARR_IMM_6B = 0x6B;
+        public static final int JMP_IND = 0x6C;
+        public static final int ADC_ABS = 0x6D;
+        public static final int ROR_ABS = 0x6E;
+        public static final int RRA_ABS_6F = 0x6F;
+        public static final int BVS = 0x70;
+        public static final int ADC_IZY = 0x71;
+        public static final int RRA_IZY_73 = 0x73;
+        public static final int NOP_ZPX_74 = 0x74;
+        public static final int ADC_ZPX = 0x75;
+        public static final int ROR_ZPX = 0x76;
+        public static final int RRA_ZPX_77 = 0x77;
+        public static final int SEI = 0x78;
+        public static final int ADC_ABY = 0x79;
+        public static final int NOP_7A = 0x7A;
+        public static final int RRA_ABY_7B = 0x7B;
+        public static final int NOP_ABX_7C = 0x7C;
+        public static final int ADC_ABX = 0x7D;
+        public static final int ROR_ABX = 0x7E;
+        public static final int RRA_ABX_7F = 0x7F;
+        public static final int NOP_IMM_80 = 0x80;
+        public static final int STA_IZX = 0x81;
+        public static final int NOP_IMM_82 = 0x82;
+        public static final int SAX_IZX_83 = 0x83;
+        public static final int STY_ZP = 0x84;
+        public static final int STA_ZP = 0x85;
+        public static final int STX_ZP = 0x86;
+        public static final int SAX_ZP_87 = 0x87;
+        public static final int DEY = 0x88;
+        public static final int NOP_IMM_89 = 0x89;
+        public static final int TXA = 0x8A;
+        public static final int XAA_IMM_8B = 0x8B;
+        public static final int STY_ABS = 0x8C;
+        public static final int STA_ABS = 0x8D;
+        public static final int STX_ABS = 0x8E;
+        public static final int SAX_ABS_8F = 0x8F;
+        public static final int BCC = 0x90;
+        public static final int STA_IZY = 0x91;
+        public static final int AHX_IZY_93 = 0x93;
+        public static final int STY_ZPX = 0x94;
+        public static final int STA_ZPX = 0x95;
+        public static final int STX_ZPY = 0x96;
+        public static final int SAX_ZPY_97 = 0x97;
+        public static final int TYA = 0x98;
+        public static final int STA_ABY = 0x99;
+        public static final int TXS = 0x9A;
+        public static final int TAS_ABY_9B = 0x9B;
+        public static final int SHY_ABX_9C = 0x9C;
+        public static final int STA_ABX = 0x9D;
+        public static final int SHX_ABY_9E = 0x9E;
+        public static final int AHX_ABY_9F = 0x9F;
+        public static final int LDY_IMM = 0xA0;
+        public static final int LDA_IZX = 0xA1;
+        public static final int LDX_IMM = 0xA2;
+        public static final int LAX_IZX_A3 = 0xA3;
+        public static final int LDY_ZP = 0xA4;
+        public static final int LDA_ZP = 0xA5;
+        public static final int LDX_ZP = 0xA6;
+        public static final int LAX_ZP_A7 = 0xA7;
+        public static final int TAY = 0xA8;
+        public static final int LDA_IMM = 0xA9;
+        public static final int TAX = 0xAA;
+        public static final int LAX_IMM_AB = 0xAB;
+        public static final int LDY_ABS = 0xAC;
+        public static final int LDA_ABS = 0xAD;
+        public static final int LDX_ABS = 0xAE;
+        public static final int LAX_ABS_AF = 0xAF;
+        public static final int BCS = 0xB0;
+        public static final int LDA_IZY = 0xB1;
+        public static final int LAX_IZY_B3 = 0xB3;
+        public static final int LDY_ZPX = 0xB4;
+        public static final int LDA_ZPX = 0xB5;
+        public static final int LDX_ZPY = 0xB6;
+        public static final int LAX_ZPY_B7 = 0xB7;
+        public static final int CLV = 0xB8;
+        public static final int LDA_ABY = 0xB9;
+        public static final int TSX = 0xBA;
+        public static final int LAS_ABY_BB = 0xBB;
+        public static final int LDY_ABX = 0xBC;
+        public static final int LDA_ABX = 0xBD;
+        public static final int LDX_ABY = 0xBE;
+        public static final int LAX_ABY_BF = 0xBF;
+        public static final int CPY_IMM = 0xC0;
+        public static final int CMP_IZX = 0xC1;
+        public static final int NOP_IMM_C2 = 0xC2;
+        public static final int DCP_IZX_C3 = 0xC3;
+        public static final int CPY_ZP = 0xC4;
+        public static final int CMP_ZP = 0xC5;
+        public static final int DEC_ZP = 0xC6;
+        public static final int DCP_ZP_C7 = 0xC7;
+        public static final int INY = 0xC8;
+        public static final int CMP_IMM = 0xC9;
+        public static final int DEX = 0xCA;
+        public static final int AXS_IMM_CB = 0xCB;
+        public static final int CPY_ABS = 0xCC;
+        public static final int CMP_ABS = 0xCD;
+        public static final int DEC_ABS = 0xCE;
+        public static final int DCP_ABS_CF = 0xCF;
+        public static final int BNE = 0xD0;
+        public static final int CMP_IZY = 0xD1;
+        public static final int DCP_IZY_D3 = 0xD3;
+        public static final int NOP_ZPX_D4 = 0xD4;
+        public static final int CMP_ZPX = 0xD5;
+        public static final int DEC_ZPX = 0xD6;
+        public static final int DCP_ZPX_D7 = 0xD7;
+        public static final int CLD = 0xD8;
+        public static final int CMP_ABY = 0xD9;
+        public static final int NOP_DA = 0xDA;
+        public static final int DCP_ABY_DB = 0xDB;
+        public static final int NOP_ABX_DC = 0xDC;
+        public static final int CMP_ABX = 0xDD;
+        public static final int DEC_ABX = 0xDE;
+        public static final int DCP_ABX_DF = 0xDF;
+        public static final int CPX_IMM = 0xE0;
+        public static final int SBC_IZX = 0xE1;
+        public static final int NOP_IMM_E2 = 0xE2;
+        public static final int ISC_IZX_E3 = 0xE3;
+        public static final int CPX_ZP = 0xE4;
+        public static final int SBC_ZP = 0xE5;
+        public static final int INC_ZP = 0xE6;
+        public static final int ISC_ZP_E7 = 0xE7;
+        public static final int INX = 0xE8;
+        public static final int SBC_IMM = 0xE9;
+        public static final int NOP = 0xEA;
+        public static final int SBC_IMM_EB = 0xEB;
+        public static final int CPX_ABS = 0xEC;
+        public static final int SBC_ABS = 0xED;
+        public static final int INC_ABS = 0xEE;
+        public static final int ISC_ABS_EF = 0xEF;
+        public static final int BEQ = 0xF0;
+        public static final int SBC_IZY = 0xF1;
+        public static final int ISC_IZY_F3 = 0xF3;
+        public static final int NOP_ZPX_F4 = 0xF4;
+        public static final int SBC_ZPX = 0xF5;
+        public static final int INC_ZPX = 0xF6;
+        public static final int ISC_ZPX_F7 = 0xF7;
+        public static final int SED = 0xF8;
+        public static final int SBC_ABY = 0xF9;
+        public static final int NOP_FA = 0xFA;
+        public static final int ISC_ABY_FB = 0xFB;
+        public static final int NOP_ABX_FC = 0xFC;
+        public static final int SBC_ABX = 0xFD;
+        public static final int INC_ABX = 0xFE;
+        public static final int ISC_ABX_FF = 0xFF;
     }
 
     public static final class FLAG {
@@ -336,7 +329,55 @@ public final class Mpu6502Specifications {
     };
 
     public enum AddressingMode {
-        NONE(1), IZX(2), IZY(2), JAM(1), ZP(2), ZPX(2), ZPY(2), IMM(2), ABS(3), ABX(3), ABY(3), REL(2), IND(3);
+        NONE(1),
+        /**
+         * (n, x)
+         */
+        IZX(2),
+        /**
+         * (n), y
+         */
+        IZY(2),
+        /**
+         * this instruction will jam the CPU
+         */
+        JAM(1),
+        /**
+         * n
+         */
+        ZP(2),
+        /**
+         * n, x
+         */
+        ZPX(2),
+        /**
+         * n, y
+         */
+        ZPY(2),
+        /**
+         * #n
+         */
+        IMM(2),
+        /**
+         * nn
+         */
+        ABS(3),
+        /**
+         * nn, x
+         */
+        ABX(3),
+        /**
+         * nn, y
+         */
+        ABY(3),
+        /**
+         * n (for relative jumps)
+         */
+        REL(2),
+        /**
+         * (nn)
+         */
+        IND(3);
 
         public int totalBytes;
 
