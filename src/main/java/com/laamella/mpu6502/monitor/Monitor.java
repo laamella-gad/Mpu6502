@@ -77,14 +77,14 @@ public class Monitor {
     }
 
     private String getFlagsString() {
-        return (isSet(mpu.flags, FLAG.NEGATIVE) ? "N" : ".") +
-                (isSet(mpu.flags, FLAG.OVERFLOW) ? "V" : ".") +
+        return (isSet(mpu.flags, FLAG_MASK.NEGATIVE) ? "N" : ".") +
+                (isSet(mpu.flags, FLAG_MASK.OVERFLOW) ? "V" : ".") +
                 (isSet(mpu.flags, 0x20) ? "1" : ".") +
-                (isSet(mpu.flags, FLAG.BREAK) ? "B" : ".") +
-                (isSet(mpu.flags, FLAG.DECIMAL) ? "D" : ".") +
-                (isSet(mpu.flags, FLAG.INTERRUPT) ? "I" : ".") +
-                (isSet(mpu.flags, FLAG.ZERO) ? "Z" : ".") +
-                (isSet(mpu.flags, FLAG.CARRY) ? "C" : ".");
+                (isSet(mpu.flags, FLAG_MASK.BREAK) ? "B" : ".") +
+                (isSet(mpu.flags, FLAG_MASK.DECIMAL) ? "D" : ".") +
+                (isSet(mpu.flags, FLAG_MASK.INTERRUPT) ? "I" : ".") +
+                (isSet(mpu.flags, FLAG_MASK.ZERO) ? "Z" : ".") +
+                (isSet(mpu.flags, FLAG_MASK.CARRY) ? "C" : ".");
     }
 
 }

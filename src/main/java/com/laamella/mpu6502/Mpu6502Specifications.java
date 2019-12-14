@@ -11,7 +11,7 @@ import static com.laamella.mpu6502.Mpu6502Specifications.AddressingMode.*;
  * A big collection of data on the processor's instructions.
  */
 public final class Mpu6502Specifications {
-    public static final class OPCODE {
+    public static final class OPCODE_NR {
         public static final int BRK = 0x00;
         public static final int ORA_IZX = 0x01;
         public static final int SLO_IZX_03 = 0x03;
@@ -258,7 +258,7 @@ public final class Mpu6502Specifications {
         public static final int ISC_ABX_FF = 0xFF;
     }
 
-    public static final class FLAG {
+    public static final class FLAG_MASK {
         public static final int NEGATIVE = 0x80;
         public static final int OVERFLOW = 0x40;
         public static final int BREAK = 0x10;
@@ -266,6 +266,26 @@ public final class Mpu6502Specifications {
         public static final int INTERRUPT = 0x04;
         public static final int ZERO = 0x02;
         public static final int CARRY = 0x01;
+    }
+
+    public enum Flag {
+        NEGATIVE(FLAG_MASK.NEGATIVE),
+        OVERFLOW(FLAG_MASK.OVERFLOW),
+        BREAK(FLAG_MASK.BREAK),
+        DECIMAL(FLAG_MASK.DECIMAL),
+        INTERRUPT(FLAG_MASK.INTERRUPT),
+        ZERO(FLAG_MASK.ZERO),
+        CARRY(FLAG_MASK.CARRY);
+
+        public final int mask;
+
+        Flag(int mask) {
+            this.mask = mask;
+        }
+    }
+
+    public enum Register {
+        A, X, Y
     }
 
     public static final int[] CPU_CYCLES = {
