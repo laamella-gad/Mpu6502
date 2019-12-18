@@ -16,40 +16,41 @@ public class Disassembler {
         AddressingMode addressingMode = ADDRESSING_MODE[opcode];
         String operand;
         switch (addressingMode) {
-            case IZX:
+            case IND_X:
                 operand = format("($%02X, X)", byte1);
                 break;
-            case IZY:
+            case IND_Y:
                 operand = format("($%02X), Y", byte1);
                 break;
-            case REL:
+            case RELATIVE:
                 operand = format("$%04X", addr + toSignedByte(byte1) + 2);
                 break;
-            case IND:
+            case INDIRECT:
                 operand = format("($%02X%02X)", byte2, byte1);
                 break;
-            case ABS:
+            case ABSOLUTE:
                 operand = format("$%02X%02X", byte2, byte1);
                 break;
-            case ABX:
+            case ABSOLUTE_X:
                 operand = format("$%02X%02X, X", byte2, byte1);
                 break;
-            case ABY:
+            case ABSOLUTE_Y:
                 operand = format("$%02X%02X, Y", byte2, byte1);
                 break;
-            case IMM:
+            case IMMEDIATE:
                 operand = format("#%02X", byte1);
                 break;
-            case ZP:
+            case ZERO_PAGE:
                 operand = format("$%02X", byte1);
                 break;
-            case ZPX:
+            case ZERO_PAGE_X:
                 operand = format("$%02X, X", byte1);
                 break;
-            case ZPY:
+            case ZERO_PAGE_Y:
                 operand = format("$%02X, Y", byte1);
                 break;
             case JAM:
+            case ACCUMULATOR:
             case NONE:
                 operand = "";
                 break;
