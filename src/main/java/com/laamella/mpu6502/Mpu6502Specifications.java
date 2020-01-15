@@ -1,8 +1,6 @@
 package com.laamella.mpu6502;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.laamella.mpu6502.Mpu6502Specifications.AddressingMode.*;
@@ -718,14 +716,26 @@ public final class Mpu6502Specifications {
         }
     }
 
-    public static final Mpu6502Instruction[] INSTRUCTION_BY_NR = new Mpu6502Instruction[256];
-    public static final Map<String, List<Mpu6502Instruction>> INSTRUCTIONS_BY_NAME = new HashMap<>();
+    private static final Mpu6502Instruction[] INSTRUCTION_BY_NR = new Mpu6502Instruction[256];
+    private static final Map<String, Map<AddressingMode, Mpu6502Instruction>> INSTRUCTIONS_BY_NAME_BY_ADDRESSING_MODE = new HashMap<>();
 
     static {
         for (Mpu6502Instruction instruction : Mpu6502Instruction.values()) {
             INSTRUCTION_BY_NR[instruction.nr] = instruction;
-            List<Mpu6502Instruction> instructions = INSTRUCTIONS_BY_NAME.computeIfAbsent(instruction.name, name -> new ArrayList<>());
-            instructions.add(instruction);
+            Map<AddressingMode, Mpu6502Instruction> addressingModes = INSTRUCTIONS_BY_NAME_BY_ADDRESSING_MODE.computeIfAbsent(instruction.name, name -> new HashMap<>());
+            addressingModes.put(instruction.addressingMode, instruction);
         }
+    }
+
+    public static Mpu6502Instruction findInstruction(String name, AddressingMode addressingMode) {
+        Map<AddressingMode, Mpu6502Instruction> addressingModes = findInstruction(name);
+        if (addressingModes == null) {
+            return null;
+        }
+        return addressingModes.get(addressingMode);
+    }
+
+    public static Map<AddressingMode, Mpu6502Instruction> findInstruction(String name) {
+        return INSTRUCTIONS_BY_NAME_BY_ADDRESSING_MODE.get(name.toUpperCase());
     }
 }
