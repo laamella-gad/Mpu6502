@@ -1,9 +1,13 @@
 package com.laamella.mpu6502;
 
-import static com.laamella.mpu6502.Mpu6502Specifications.*;
-import static com.laamella.mpu6502.Mpu6502Specifications.AddressingMode.JAM;
-import static com.laamella.mpu6502.Mpu6502Specifications.OPCODE_NR.*;
+import com.laamella.mpu6502.specification.FlagMask;
+import com.laamella.mpu6502.specification.Vector;
+
 import static com.laamella.mpu6502.RunState.*;
+import static com.laamella.mpu6502.specification.AddressingMode.JAM;
+import static com.laamella.mpu6502.specification.Opcode.ADDRESSING_MODE;
+import static com.laamella.mpu6502.specification.Opcode.CPU_CYCLES;
+import static com.laamella.mpu6502.specification.Opcode.Nr.*;
 import static java.lang.String.format;
 
 /**
@@ -237,62 +241,62 @@ public final class Mpu6502 {
 
     private void setFlags(int data) {
         if (zero(data))
-            flags = (flags & ~FLAG_MASK.NEGATIVE) | FLAG_MASK.ZERO;
+            flags = (flags & ~FlagMask.NEGATIVE) | FlagMask.ZERO;
         else
-            flags = (flags & ~(FLAG_MASK.NEGATIVE | FLAG_MASK.ZERO)) |
-                    ((data) & FLAG_MASK.NEGATIVE);
+            flags = (flags & ~(FlagMask.NEGATIVE | FlagMask.ZERO)) |
+                    ((data) & FlagMask.NEGATIVE);
     }
 
     private void ADC(Ref ref) {
         int data = ref.get();
         int temp;
-        if (isSet(flags, FLAG_MASK.DECIMAL)) {
-            temp = (a & 0xf) + (data & 0xf) + (flags & FLAG_MASK.CARRY);
+        if (isSet(flags, FlagMask.DECIMAL)) {
+            temp = (a & 0xf) + (data & 0xf) + (flags & FlagMask.CARRY);
             if (temp > 0x9)
                 temp += 0x6;
             if (temp <= 0x0f)
                 temp = (temp & 0xf) + (a & 0xf0) + (data & 0xf0);
             else
                 temp = (temp & 0xf) + (a & 0xf0) + (data & 0xf0) + 0x10;
-            if (!isSet(a + data + (flags & FLAG_MASK.CARRY), 0xff))
-                flags |= FLAG_MASK.ZERO;
+            if (!isSet(a + data + (flags & FlagMask.CARRY), 0xff))
+                flags |= FlagMask.ZERO;
             else
-                flags &= ~FLAG_MASK.ZERO;
+                flags &= ~FlagMask.ZERO;
             if (isSet(temp, 0x80))
-                flags |= FLAG_MASK.NEGATIVE;
+                flags |= FlagMask.NEGATIVE;
             else
-                flags &= ~FLAG_MASK.NEGATIVE;
+                flags &= ~FlagMask.NEGATIVE;
             if (isSet((a ^ temp), 0x80) && !isSet((a ^ data), 0x80))
-                flags |= FLAG_MASK.OVERFLOW;
+                flags |= FlagMask.OVERFLOW;
             else
-                flags &= ~FLAG_MASK.OVERFLOW;
+                flags &= ~FlagMask.OVERFLOW;
             if ((temp & 0x1f0) > 0x90) temp += 0x60;
             if ((temp & 0xff0) > 0xf0)
-                flags |= FLAG_MASK.CARRY;
+                flags |= FlagMask.CARRY;
             else
-                flags &= ~FLAG_MASK.CARRY;
+                flags &= ~FlagMask.CARRY;
         } else {
-            temp = data + a + (flags & FLAG_MASK.CARRY);
+            temp = data + a + (flags & FlagMask.CARRY);
             setFlags(temp & 0xff);
             if (!isSet((a ^ data), 0x80) && isSet((a ^ temp), 0x80))
-                flags |= FLAG_MASK.OVERFLOW;
+                flags |= FlagMask.OVERFLOW;
             else
-                flags &= ~FLAG_MASK.OVERFLOW;
+                flags &= ~FlagMask.OVERFLOW;
             if (temp > 0xff)
-                flags |= FLAG_MASK.CARRY;
+                flags |= FlagMask.CARRY;
             else
-                flags &= ~FLAG_MASK.CARRY;
+                flags &= ~FlagMask.CARRY;
         }
         a = temp & 0xff;
     }
 
     private void SBC(Ref dataRef) {
         int data = dataRef.get();
-        int temp = a - data - ((flags & FLAG_MASK.CARRY) ^ FLAG_MASK.CARRY);
+        int temp = a - data - ((flags & FlagMask.CARRY) ^ FlagMask.CARRY);
 
-        if (isSet(flags, FLAG_MASK.DECIMAL)) {
+        if (isSet(flags, FlagMask.DECIMAL)) {
             int tempval2;
-            tempval2 = (a & 0xf) - (data & 0xf) - ((flags & FLAG_MASK.CARRY) ^ FLAG_MASK.CARRY);
+            tempval2 = (a & 0xf) - (data & 0xf) - ((flags & FlagMask.CARRY) ^ FlagMask.CARRY);
             if (isSet(tempval2, 0x10))
                 tempval2 = ((tempval2 - 6) & 0xf) | ((a & 0xf0) - (data & 0xf0) - 0x10);
             else
@@ -300,27 +304,27 @@ public final class Mpu6502 {
             if (isSet(tempval2, 0x100))
                 tempval2 -= 0x60;
             if (temp < 0) {
-                flags &= ~FLAG_MASK.CARRY;
+                flags &= ~FlagMask.CARRY;
             } else {
-                flags |= FLAG_MASK.CARRY;
+                flags |= FlagMask.CARRY;
             }
             setFlags(temp & 0xff);
             if (isSet((a ^ temp), 0x80) && isSet((a ^ data), 0x80))
-                flags |= FLAG_MASK.OVERFLOW;
+                flags |= FlagMask.OVERFLOW;
             else
-                flags &= ~FLAG_MASK.OVERFLOW;
+                flags &= ~FlagMask.OVERFLOW;
             a = tempval2 & 0xff;
         } else {
             setFlags(temp & 0xff);
             if (temp < 0) {
-                flags &= ~FLAG_MASK.CARRY;
+                flags &= ~FlagMask.CARRY;
             } else {
-                flags |= FLAG_MASK.CARRY;
+                flags |= FlagMask.CARRY;
             }
             if (isSet((a ^ temp), 0x80) && isSet((a ^ data), 0x80))
-                flags |= FLAG_MASK.OVERFLOW;
+                flags |= FlagMask.OVERFLOW;
             else
-                flags &= ~FLAG_MASK.OVERFLOW;
+                flags &= ~FlagMask.OVERFLOW;
             a = temp & 0xff;
         }
     }
@@ -328,26 +332,26 @@ public final class Mpu6502 {
     private void CMP(Ref src, Ref data) {
         final int temp = (src.get() - data.get()) & 0xff;
 
-        flags = (flags & ~(FLAG_MASK.CARRY | FLAG_MASK.NEGATIVE | FLAG_MASK.ZERO)) |
-                (temp & FLAG_MASK.NEGATIVE);
+        flags = (flags & ~(FlagMask.CARRY | FlagMask.NEGATIVE | FlagMask.ZERO)) |
+                (temp & FlagMask.NEGATIVE);
 
-        if (zero(temp)) flags |= FLAG_MASK.ZERO;
-        if (src.get() >= data.get()) flags |= FLAG_MASK.CARRY;
+        if (zero(temp)) flags |= FlagMask.ZERO;
+        if (src.get() >= data.get()) flags |= FlagMask.CARRY;
     }
 
     private void ASL(Ref data) {
         int temp = data.get();
         temp <<= 1;
-        if (isSet(temp, 0x100)) flags |= FLAG_MASK.CARRY;
-        else flags &= ~FLAG_MASK.CARRY;
+        if (isSet(temp, 0x100)) flags |= FlagMask.CARRY;
+        else flags &= ~FlagMask.CARRY;
 
         assignAndSetFlags(data, temp);
     }
 
     private void LSR(Ref data) {
         int temp = data.get();
-        if (isSet(temp, 1)) flags |= FLAG_MASK.CARRY;
-        else flags &= ~FLAG_MASK.CARRY;
+        if (isSet(temp, 1)) flags |= FlagMask.CARRY;
+        else flags &= ~FlagMask.CARRY;
         temp >>= 1;
         assignAndSetFlags(data, temp);
     }
@@ -355,17 +359,17 @@ public final class Mpu6502 {
     private void ROL(Ref data) {
         int temp = data.get();
         temp <<= 1;
-        if (isSet(flags, FLAG_MASK.CARRY)) temp |= 1;
-        if (isSet(temp, 0x100)) flags |= FLAG_MASK.CARRY;
-        else flags &= ~FLAG_MASK.CARRY;
+        if (isSet(flags, FlagMask.CARRY)) temp |= 1;
+        if (isSet(temp, 0x100)) flags |= FlagMask.CARRY;
+        else flags &= ~FlagMask.CARRY;
         assignAndSetFlags(data, temp);
     }
 
     private void ROR(Ref data) {
         int temp = data.get();
-        if (isSet(flags, FLAG_MASK.CARRY)) temp |= 0x100;
-        if (isSet(temp, 1)) flags |= FLAG_MASK.CARRY;
-        else flags &= ~FLAG_MASK.CARRY;
+        if (isSet(flags, FlagMask.CARRY)) temp |= 0x100;
+        if (isSet(temp, 1)) flags |= FlagMask.CARRY;
+        else flags &= ~FlagMask.CARRY;
         temp >>= 1;
         assignAndSetFlags(data, temp);
     }
@@ -397,10 +401,10 @@ public final class Mpu6502 {
 
     private void BIT(Ref dataRef) {
         final int data = dataRef.get();
-        flags = (flags & ~(FLAG_MASK.NEGATIVE | FLAG_MASK.OVERFLOW)) |
-                (data & (FLAG_MASK.NEGATIVE | FLAG_MASK.OVERFLOW));
-        if (!isSet(data, a)) flags |= FLAG_MASK.ZERO;
-        else flags &= ~FLAG_MASK.ZERO;
+        flags = (flags & ~(FlagMask.NEGATIVE | FlagMask.OVERFLOW)) |
+                (data & (FlagMask.NEGATIVE | FlagMask.OVERFLOW));
+        if (!isSet(data, a)) flags |= FlagMask.ZERO;
+        else flags &= ~FlagMask.ZERO;
     }
 
     public RunState step() {
@@ -589,17 +593,17 @@ public final class Mpu6502 {
                 break;
 
             case BCC:
-                if (!isSet(flags, FLAG_MASK.CARRY)) branch();
+                if (!isSet(flags, FlagMask.CARRY)) branch();
                 else pc++;
                 break;
 
             case BCS:
-                if (isSet(flags, FLAG_MASK.CARRY)) branch();
+                if (isSet(flags, FlagMask.CARRY)) branch();
                 else pc++;
                 break;
 
             case BEQ:
-                if (isSet(flags, FLAG_MASK.ZERO)) branch();
+                if (isSet(flags, FlagMask.ZERO)) branch();
                 else pc++;
                 break;
 
@@ -614,44 +618,44 @@ public final class Mpu6502 {
                 break;
 
             case BMI:
-                if (isSet(flags, FLAG_MASK.NEGATIVE)) branch();
+                if (isSet(flags, FlagMask.NEGATIVE)) branch();
                 else pc++;
                 break;
 
             case BNE:
-                if (!isSet(flags, FLAG_MASK.ZERO)) branch();
+                if (!isSet(flags, FlagMask.ZERO)) branch();
                 else pc++;
                 break;
 
             case BPL:
-                if (!isSet(flags, FLAG_MASK.NEGATIVE)) branch();
+                if (!isSet(flags, FlagMask.NEGATIVE)) branch();
                 else pc++;
                 break;
 
             case BVC:
-                if (!isSet(flags, FLAG_MASK.OVERFLOW)) branch();
+                if (!isSet(flags, FlagMask.OVERFLOW)) branch();
                 else pc++;
                 break;
 
             case BVS:
-                if (isSet(flags, FLAG_MASK.OVERFLOW)) branch();
+                if (isSet(flags, FlagMask.OVERFLOW)) branch();
                 else pc++;
                 break;
 
             case CLC:
-                flags &= ~FLAG_MASK.CARRY;
+                flags &= ~FlagMask.CARRY;
                 break;
 
             case CLD:
-                flags &= ~FLAG_MASK.DECIMAL;
+                flags &= ~FlagMask.DECIMAL;
                 break;
 
             case CLI:
-                flags &= ~FLAG_MASK.INTERRUPT;
+                flags &= ~FlagMask.INTERRUPT;
                 break;
 
             case CLV:
-                flags &= ~FLAG_MASK.OVERFLOW;
+                flags &= ~FlagMask.OVERFLOW;
                 break;
 
             case CMP_IMM:
@@ -1016,7 +1020,7 @@ public final class Mpu6502 {
                 break;
 
             case PHP:
-                push(flags | FLAG_MASK.BREAK | 0x20);
+                push(flags | FlagMask.BREAK | 0x20);
                 break;
 
             case PLA:
@@ -1131,15 +1135,15 @@ public final class Mpu6502 {
                 break;
 
             case SEC:
-                flags |= FLAG_MASK.CARRY;
+                flags |= FlagMask.CARRY;
                 break;
 
             case SED:
-                flags |= FLAG_MASK.DECIMAL;
+                flags |= FlagMask.DECIMAL;
                 break;
 
             case SEI:
-                flags |= FLAG_MASK.INTERRUPT;
+                flags |= FlagMask.INTERRUPT;
                 break;
 
             case STA_ZP:
@@ -1273,12 +1277,12 @@ public final class Mpu6502 {
             push(returnAddress & 0xff);
             int flagsToPush = flags | 0x20;
             if (setBreakFlag) {
-                push(flagsToPush | FLAG_MASK.BREAK);
+                push(flagsToPush | FlagMask.BREAK);
             } else {
-                push(flagsToPush & ~FLAG_MASK.BREAK);
+                push(flagsToPush & ~FlagMask.BREAK);
             }
         }
-        flags |= FLAG_MASK.INTERRUPT;
+        flags |= FlagMask.INTERRUPT;
         pc = bus.readWord(vectorAddress);
     }
 }

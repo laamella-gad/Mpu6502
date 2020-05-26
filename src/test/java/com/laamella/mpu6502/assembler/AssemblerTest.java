@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.laamella.mpu6502.Mpu6502Specifications.OPCODE_NR.LDA_IMM;
-import static com.laamella.mpu6502.Mpu6502Specifications.OPCODE_NR.STA_ABS;
 import static com.laamella.mpu6502.assembler.Assemblable.*;
+import static com.laamella.mpu6502.specification.Opcode.Nr.LDA_IMM;
+import static com.laamella.mpu6502.specification.Opcode.Nr.STA_ABS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AssemblerTest {

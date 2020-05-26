@@ -4,10 +4,10 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static com.laamella.mpu6502.Mpu6502Specifications.ADDRESSING_MODE;
-import static com.laamella.mpu6502.Mpu6502Specifications.OPCODE_NAME;
 import static com.laamella.mpu6502.assembler.Words.hi;
 import static com.laamella.mpu6502.assembler.Words.lo;
+import static com.laamella.mpu6502.specification.Opcode.ADDRESSING_MODE;
+import static com.laamella.mpu6502.specification.Opcode.OPCODE_NAME;
 
 public final class Instruction extends Assemblable {
     private final int opcode;

@@ -2,12 +2,12 @@ package com.laamella.mpu6502.monitor;
 
 import com.laamella.mpu6502.Mpu6502;
 import com.laamella.mpu6502.disassembler.Disassembler;
+import com.laamella.mpu6502.specification.FlagMask;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static com.laamella.mpu6502.Mpu6502Specifications.*;
 import static com.laamella.mpu6502.RunState.RUNNING;
 import static java.lang.String.format;
 
@@ -77,14 +77,14 @@ public class Monitor {
     }
 
     private String getFlagsString() {
-        return (isSet(mpu.flags, FLAG_MASK.NEGATIVE) ? "N" : ".") +
-                (isSet(mpu.flags, FLAG_MASK.OVERFLOW) ? "V" : ".") +
+        return (isSet(mpu.flags, FlagMask.NEGATIVE) ? "N" : ".") +
+                (isSet(mpu.flags, FlagMask.OVERFLOW) ? "V" : ".") +
                 (isSet(mpu.flags, 0x20) ? "1" : ".") +
-                (isSet(mpu.flags, FLAG_MASK.BREAK) ? "B" : ".") +
-                (isSet(mpu.flags, FLAG_MASK.DECIMAL) ? "D" : ".") +
-                (isSet(mpu.flags, FLAG_MASK.INTERRUPT) ? "I" : ".") +
-                (isSet(mpu.flags, FLAG_MASK.ZERO) ? "Z" : ".") +
-                (isSet(mpu.flags, FLAG_MASK.CARRY) ? "C" : ".");
+                (isSet(mpu.flags, FlagMask.BREAK) ? "B" : ".") +
+                (isSet(mpu.flags, FlagMask.DECIMAL) ? "D" : ".") +
+                (isSet(mpu.flags, FlagMask.INTERRUPT) ? "I" : ".") +
+                (isSet(mpu.flags, FlagMask.ZERO) ? "Z" : ".") +
+                (isSet(mpu.flags, FlagMask.CARRY) ? "C" : ".");
     }
 
 }

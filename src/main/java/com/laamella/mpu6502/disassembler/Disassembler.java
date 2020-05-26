@@ -1,6 +1,9 @@
 package com.laamella.mpu6502.disassembler;
 
-import static com.laamella.mpu6502.Mpu6502Specifications.*;
+import com.laamella.mpu6502.specification.AddressingMode;
+
+import static com.laamella.mpu6502.specification.Opcode.ADDRESSING_MODE;
+import static com.laamella.mpu6502.specification.Opcode.OPCODE_NAME;
 import static java.lang.String.format;
 
 public class Disassembler {
