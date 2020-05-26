@@ -2,7 +2,9 @@ package com.laamella.mpu6502.specification;
 
 import static com.laamella.mpu6502.specification.AddressingMode.*;
 
-public final class Opcode {
+public enum Opcode {
+    BRK, ORA, SLO, NOP, ASL, PHP, ANC, BPL, CLC, JSR, AND, RLA, BIT, ROL, PLP, BMI, SEC, RTI, EOR, SRE, PHA, LSR, ALR, JMP, BVC, CLI, RTS, ADC, RRA, ROR, PLA, ARR, BVS, SEI, STA, SAX, STY, STX, DEY, TXA, XAA, BCC, AHX, TYA, TXS, TAS, SHY, SHX, LDY, LDA, LDX, LAX, TAY, TAX, BCS, CLV, TSX, LAS, CPY, CMP, DCP, DEC, INY, DEX, AXS, BNE, CLD, CPX, SBC, ISC, INC, INX, BEQ, SED;
+
     public final static class Nr {
         public static final int BRK = 0x00;
         public static final int ORA_IZX = 0x01;
@@ -309,6 +311,7 @@ public final class Opcode {
             N, N, Y, Y, N, N, N, Y, N, N, N, Y, N, N, N, Y,
             N, N, Y, Y, Y, N, N, Y, N, N, Y, Y, Y, N, N, Y
     };
+
     public static final AddressingMode[] ADDRESSING_MODE = {
             NONE, IND_X, JAM, IND_X, ZERO_PAGE, ZERO_PAGE, ZERO_PAGE, ZERO_PAGE, NONE, IMMEDIATE, NONE, IMMEDIATE, ABSOLUTE, ABSOLUTE, ABSOLUTE, ABSOLUTE,
             RELATIVE, IND_Y, JAM, IND_Y, ZERO_PAGE_X, ZERO_PAGE_X, ZERO_PAGE_X, ZERO_PAGE_X, NONE, ABSOLUTE_Y, NONE, ABSOLUTE_Y, ABSOLUTE_X, ABSOLUTE_X, ABSOLUTE_X, ABSOLUTE_X,
@@ -346,4 +349,4 @@ public final class Opcode {
             N, N, N, N, N, N, N, N, N, N, N, N, N, N, N, N,
             Y, Y, N, N, N, N, N, N, N, Y, N, N, Y, Y, N, N
     };
-}
+    }
